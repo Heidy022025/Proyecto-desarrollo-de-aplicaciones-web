@@ -1,62 +1,171 @@
-const formulario = document.getElementById("formProducto");
-const lista = document.getElementById("listaProductos");
-const mensaje = document.getElementById("mensaje");
-const contador = document.getElementById("contador");
+const formulario=document.getElementById("formProducto");
 
-let total = 0;
+const nombre=document.getElementById("nombre");
+const descripcion=document.getElementById("descripcion");
+const categoria=document.getElementById("categoria");
 
-formulario.addEventListener("submit", function(e){
+const mensaje=document.getElementById("mensaje");
+const lista=document.getElementById("listaProductos");
+const contador=document.getElementById("contador");
+
+let productos=[];
+
+function validarNombre(){
+
+    if(nombre.value.trim().length<3){
+
+        nombre.classList.add("is-invalid");
+        nombre.classList.remove("is-valid");
+
+        errorNombre.textContent="Debe tener mínimo 3 caracteres.";
+
+        return false;
+
+    }
+
+    nombre.classList.remove("is-invalid");
+    nombre.classList.add("is-valid");
+
+    errorNombre.textContent="";
+
+    return true;
+
+}
+
+function validarDescripcion(){
+
+    if(descripcion.value.trim().length<10){
+
+        descripcion.classList.add("is-invalid");
+        descripcion.classList.remove("is-valid");
+
+        errorDescripcion.textContent="Ingrese al menos 10 caracteres.";
+
+        return false;
+
+    }
+
+    descripcion.classList.remove("is-invalid");
+    descripcion.classList.add("is-valid");
+
+    errorDescripcion.textContent="";
+
+    return true;
+
+}
+
+function validarCategoria(){
+
+    if(categoria.value==""){
+
+        categoria.classList.add("is-invalid");
+        categoria.classList.remove("is-valid");
+
+        errorCategoria.textContent="Seleccione una categoría.";
+
+        return false;
+
+    }
+
+    categoria.classList.remove("is-invalid");
+    categoria.classList.add("is-valid");
+
+    errorCategoria.textContent="";
+
+    return true;
+
+}
+
+nombre.addEventListener("input",validarNombre);
+nombre.addEventListener("blur",validarNombre);
+
+descripcion.addEventListener("input",validarDescripcion);
+descripcion.addEventListener("blur",validarDescripcion);
+
+categoria.addEventListener("change",validarCategoria);
+
+formulario.addEventListener("submit",function(e){
 
     e.preventDefault();
 
-    const nombre = document.getElementById("nombre").value.trim();
-    const descripcion = document.getElementById("descripcion").value.trim();
-    const categoria = document.getElementById("categoria").value.trim();
+    let valido=
+    validarNombre() &&
+    validarDescripcion() &&
+    validarCategoria();
 
-    if(nombre==="" || descripcion==="" || categoria===""){
+    if(!valido){
 
         mensaje.innerHTML=
-        '<div class="alert alert-danger">Complete todos los campos.</div>';
+        '<div class="alert alert-danger">Existen errores en el formulario.</div>';
 
         return;
+
     }
+
+    productos.push({
+
+        nombre:nombre.value,
+        descripcion:descripcion.value,
+        categoria:categoria.value
+
+    });
+
+    mostrarProductos();
+
+    formulario.reset();
+
+    nombre.classList.remove("is-valid");
+    descripcion.classList.remove("is-valid");
+    categoria.classList.remove("is-valid");
 
     mensaje.innerHTML=
     '<div class="alert alert-success">Producto registrado correctamente.</div>';
 
-    const card=document.createElement("div");
+});
 
-    card.className="card shadow mb-3";
+function mostrarProductos(){
 
-    card.innerHTML=`
-        <div class="card-body">
-            <h5>${nombre}</h5>
-            <p>${descripcion}</p>
-            <span class="badge bg-primary">${categoria}</span>
-            <br><br>
+    lista.innerHTML="";
 
-            <button class="btn btn-danger eliminar">
+    productos.forEach(function(producto,index){
+
+        lista.innerHTML+=`
+
+        <div class="card mt-3">
+
+            <div class="card-body">
+
+                <h5>${producto.nombre}</h5>
+
+                <p>${producto.descripcion}</p>
+
+                <span class="badge bg-primary">${producto.categoria}</span>
+
+                <br><br>
+
+                <button class="btn btn-danger"
+                onclick="eliminarProducto(${index})">
+
                 Eliminar
-            </button>
+
+                </button>
+
+            </div>
+
         </div>
-    `;
 
-    card.querySelector(".eliminar").addEventListener("click",function(){
-
-        card.remove();
-
-        total--;
-
-        contador.textContent=total;
+        `;
 
     });
 
-    lista.appendChild(card);
+    contador.textContent=productos.length;
 
-    total++;
+}
 
-    contador.textContent=total;
+function eliminarProducto(indice){
 
-    formulario.reset();
+    productos.splice(indice,1);
 
-});
+    mostrarProductos();
+
+}
