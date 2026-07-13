@@ -1,23 +1,55 @@
-const formulario=document.getElementById("formProducto");
+// ==============================
+// Obtención de elementos del DOM
+// ==============================
 
-const nombre=document.getElementById("nombre");
-const descripcion=document.getElementById("descripcion");
-const categoria=document.getElementById("categoria");
+const formulario = document.getElementById("formProducto");
 
-const mensaje=document.getElementById("mensaje");
-const lista=document.getElementById("listaProductos");
-const contador=document.getElementById("contador");
+const nombre = document.getElementById("nombre");
+const descripcion = document.getElementById("descripcion");
+const categoria = document.getElementById("categoria");
 
-let productos=[];
+const mensaje = document.getElementById("mensaje");
+const lista = document.getElementById("listaProductos");
+const contador = document.getElementById("contador");
+
+const errorNombre = document.getElementById("errorNombre");
+const errorDescripcion = document.getElementById("errorDescripcion");
+const errorCategoria = document.getElementById("errorCategoria");
+
+// ==============================
+// Arreglo de objetos
+// ==============================
+
+let productos = [
+
+    {
+        nombre: "Laptop Lenovo",
+        descripcion: "Laptop Core i5 con 8 GB de memoria RAM.",
+        categoria: "Electrónica",
+        fecha: "Producto inicial"
+    },
+
+    {
+        nombre: "Cuaderno Universitario",
+        descripcion: "Cuaderno de 100 hojas para uso académico.",
+        categoria: "Oficina",
+        fecha: "Producto inicial"
+    }
+
+];
+
+// ==============================
+// Validaciones
+// ==============================
 
 function validarNombre(){
 
-    if(nombre.value.trim().length<3){
+    if(nombre.value.trim().length < 3){
 
         nombre.classList.add("is-invalid");
         nombre.classList.remove("is-valid");
 
-        errorNombre.textContent="Debe tener mínimo 3 caracteres.";
+        errorNombre.textContent = "Debe tener mínimo 3 caracteres.";
 
         return false;
 
@@ -26,7 +58,7 @@ function validarNombre(){
     nombre.classList.remove("is-invalid");
     nombre.classList.add("is-valid");
 
-    errorNombre.textContent="";
+    errorNombre.textContent = "";
 
     return true;
 
@@ -34,12 +66,12 @@ function validarNombre(){
 
 function validarDescripcion(){
 
-    if(descripcion.value.trim().length<10){
+    if(descripcion.value.trim().length < 10){
 
         descripcion.classList.add("is-invalid");
         descripcion.classList.remove("is-valid");
 
-        errorDescripcion.textContent="Ingrese al menos 10 caracteres.";
+        errorDescripcion.textContent = "Ingrese al menos 10 caracteres.";
 
         return false;
 
@@ -48,7 +80,7 @@ function validarDescripcion(){
     descripcion.classList.remove("is-invalid");
     descripcion.classList.add("is-valid");
 
-    errorDescripcion.textContent="";
+    errorDescripcion.textContent = "";
 
     return true;
 
@@ -56,12 +88,12 @@ function validarDescripcion(){
 
 function validarCategoria(){
 
-    if(categoria.value==""){
+    if(categoria.value == ""){
 
         categoria.classList.add("is-invalid");
         categoria.classList.remove("is-valid");
 
-        errorCategoria.textContent="Seleccione una categoría.";
+        errorCategoria.textContent = "Seleccione una categoría.";
 
         return false;
 
@@ -70,33 +102,47 @@ function validarCategoria(){
     categoria.classList.remove("is-invalid");
     categoria.classList.add("is-valid");
 
-    errorCategoria.textContent="";
+    errorCategoria.textContent = "";
 
     return true;
 
 }
 
-nombre.addEventListener("input",validarNombre);
-nombre.addEventListener("blur",validarNombre);
+// ==============================
+// Eventos
+// ==============================
 
-descripcion.addEventListener("input",validarDescripcion);
-descripcion.addEventListener("blur",validarDescripcion);
+nombre.addEventListener("input", validarNombre);
+nombre.addEventListener("blur", validarNombre);
 
-categoria.addEventListener("change",validarCategoria);
+descripcion.addEventListener("input", validarDescripcion);
+descripcion.addEventListener("blur", validarDescripcion);
 
-formulario.addEventListener("submit",function(e){
+categoria.addEventListener("change", validarCategoria);
+
+// ==============================
+// Registrar producto
+// ==============================
+
+formulario.addEventListener("submit", function(e){
 
     e.preventDefault();
 
-    let valido=
-    validarNombre() &&
-    validarDescripcion() &&
-    validarCategoria();
+    let valido =
+
+        validarNombre() &&
+        validarDescripcion() &&
+        validarCategoria();
 
     if(!valido){
 
-        mensaje.innerHTML=
-        '<div class="alert alert-danger">Existen errores en el formulario.</div>';
+        mensaje.innerHTML =
+
+        `<div class="alert alert-danger">
+
+            Existen errores en el formulario.
+
+        </div>`;
 
         return;
 
@@ -104,9 +150,13 @@ formulario.addEventListener("submit",function(e){
 
     productos.push({
 
-        nombre:nombre.value,
-        descripcion:descripcion.value,
-        categoria:categoria.value
+        nombre: nombre.value,
+
+        descripcion: descripcion.value,
+
+        categoria: categoria.value,
+
+        fecha: new Date().toLocaleDateString()
 
     });
 
@@ -118,54 +168,140 @@ formulario.addEventListener("submit",function(e){
     descripcion.classList.remove("is-valid");
     categoria.classList.remove("is-valid");
 
-    mensaje.innerHTML=
-    '<div class="alert alert-success">Producto registrado correctamente.</div>';
+    mensaje.innerHTML =
+
+    `<div class="alert alert-success">
+
+        Producto registrado correctamente.
+
+    </div>`;
 
 });
 
+// ==============================
+// Mostrar productos
+// ==============================
+
 function mostrarProductos(){
 
-    lista.innerHTML="";
+    lista.innerHTML = "";
 
-    productos.forEach(function(producto,index){
+    if(productos.length === 0){
 
-        lista.innerHTML+=`
+        lista.innerHTML =
 
-        <div class="card mt-3">
+        `<div class="col-12">
 
-            <div class="card-body">
+            <div class="alert alert-warning text-center">
 
-                <h5>${producto.nombre}</h5>
-
-                <p>${producto.descripcion}</p>
-
-                <span class="badge bg-primary">${producto.categoria}</span>
-
-                <br><br>
-
-                <button class="btn btn-danger"
-                onclick="eliminarProducto(${index})">
-
-                Eliminar
-
-                </button>
+                No existen productos registrados.
 
             </div>
 
-        </div>
+        </div>`;
 
-        `;
+    }else{
 
-    });
+        productos.forEach(function(producto, index){
 
-    contador.textContent=productos.length;
+            lista.innerHTML += `
+
+            <div class="col-md-4 mb-4">
+
+                <div class="card h-100 shadow">
+
+                    <div class="card-body">
+
+                        <h5 class="card-title">
+
+                            ${producto.nombre}
+
+                        </h5>
+
+                        <p>
+
+                            ${producto.descripcion}
+
+                        </p>
+
+                        <span class="badge bg-primary">
+
+                            ${producto.categoria}
+
+                        </span>
+
+                        <hr>
+
+                        <p>
+
+                            <strong>Fecha:</strong>
+
+                            ${producto.fecha}
+
+                        </p>
+
+                        <button
+
+                            class="btn btn-danger w-100"
+
+                            onclick="eliminarProducto(${index})">
+
+                            Eliminar
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            `;
+
+        });
+
+    }
+
+    contador.textContent = productos.length;
 
 }
+
+// ==============================
+// Eliminar producto
+// ==============================
 
 function eliminarProducto(indice){
 
-    productos.splice(indice,1);
+    productos.splice(indice, 1);
 
     mostrarProductos();
 
+    if(productos.length === 0){
+
+        mensaje.innerHTML =
+
+        `<div class="alert alert-warning">
+
+            Todos los productos fueron eliminados.
+
+        </div>`;
+
+    }else{
+
+        mensaje.innerHTML =
+
+        `<div class="alert alert-info">
+
+            Producto eliminado correctamente.
+
+        </div>`;
+
+    }
+
 }
+
+// ==============================
+// Mostrar productos al iniciar
+// ==============================
+
+mostrarProductos();

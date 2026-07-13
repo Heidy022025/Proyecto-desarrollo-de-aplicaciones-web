@@ -1,0 +1,330 @@
+/* ==========================================
+   ESTILOS GENERALES
+========================================== */
+
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f4f6f9;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+/* ==========================================
+   ENCABEZADO
+========================================== */
+
+header{
+    background: linear-gradient(135deg,#92bbf7,#0a58ca);
+    color: rgb(237, 239, 239);
+    text-align: center;
+    padding: 40px 20px;
+}
+
+header h1{
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+header p{
+    font-size: 1.1rem;
+    margin-top: 10px;
+}
+
+/* ==========================================
+   MENÚ
+========================================== */
+
+.navbar-brand{
+    font-weight: bold;
+    font-size: 1.3rem;
+}
+
+.nav-link{
+    transition: 0.3s;
+}
+
+.nav-link:hover{
+    color: #f52e88 !important;
+}
+
+/* ==========================================
+   SECCIÓN PRINCIPAL
+========================================== */
+
+.hero{
+    background: rgb(172, 232, 152);
+    border-radius: 12px;
+    padding: 50px;
+    box-shadow: 0 2px 10px rgba(0,0,0,.1);
+}
+
+/* ==========================================
+   TARJETAS
+========================================== */
+
+.card{
+    border: none;
+    border-radius: 12px;
+    transition: transform .3s ease;
+}
+
+.card:hover{
+    transform: translateY(-5px);
+}
+
+.card-body{
+    text-align: center;
+}
+
+.card-title{
+    color: #0d6efd;
+    font-weight: bold;
+}
+
+/* ==========================================
+   FORMULARIOS
+========================================== */
+
+form{
+    background: rgb(237, 235, 235);
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.1);
+}
+
+.form-label{
+    font-weight: bold;
+}
+
+.form-control,
+.form-select{
+
+    border-radius: 8px;
+
+}
+
+.form-control:focus,
+.form-select:focus{
+
+    border-color:#0d6efd;
+
+    box-shadow:0 0 5px rgba(13,110,253,.3);
+
+}
+
+/* ==========================================
+   BOTONES
+========================================== */
+
+.btn{
+
+    border-radius:8px;
+
+}
+
+.btn-success{
+
+    font-weight:bold;
+
+}
+
+.btn-danger{
+
+    font-weight:bold;
+
+}
+
+/* ==========================================
+   MENSAJES
+========================================== */
+
+.alert{
+
+    border-radius:10px;
+
+}
+
+/* ==========================================
+   CONTADOR
+========================================== */
+
+#contador{
+
+    color:#0d6efd;
+
+    font-size:28px;
+
+    font-weight:bold;
+
+}
+
+/* ==========================================
+   PRODUCTOS
+========================================== */
+
+.badge{
+
+    font-size:14px;
+
+}
+
+/* ==========================================
+   VIDEO
+========================================== */
+
+.video-container{
+
+    position:relative;
+
+    overflow:hidden;
+
+    width:100%;
+
+    padding-top:56.25%;
+
+}
+
+.video-container iframe{
+
+    position:absolute;
+
+    top:0;
+
+    left:0;
+
+    width:100%;
+
+    height:100%;
+
+}
+
+/* ==========================================
+   ASIDE
+========================================== */
+
+aside{
+
+    background:rgb(169, 237, 237);
+
+    padding:20px;
+
+    border-left:5px solid #0d6efd;
+
+    border-radius:10px;
+
+    margin-top:40px;
+
+    box-shadow:0 2px 8px rgba(0,0,0,.1);
+
+}
+
+/* ==========================================
+   FOOTER
+========================================== */
+
+footer{
+
+    background:#212529;
+
+    color:rgb(254, 156, 156);
+
+    text-align:center;
+
+    padding:20px;
+
+    margin-top:40px;
+
+}
+
+footer p{
+
+    margin:0;
+
+}
+
+/* ==========================================
+   EFECTOS
+========================================== */
+
+img{
+
+    transition:.3s;
+
+}
+
+img:hover{
+
+    transform:scale(1.02);
+
+}
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media(max-width:992px){
+
+    .hero{
+
+        padding:30px;
+
+    }
+
+}
+
+@media(max-width:768px){
+
+    header{
+
+        padding:25px;
+
+    }
+
+    header h1{
+
+        font-size:2rem;
+
+    }
+
+    .hero{
+
+        padding:20px;
+
+    }
+
+    .card{
+
+        margin-bottom:20px;
+
+    }
+
+}
+
+@media(max-width:576px){
+
+    header h1{
+
+        font-size:1.6rem;
+
+    }
+
+    header p{
+
+        font-size:1rem;
+
+    }
+
+    .hero{
+
+        padding:15px;
+
+    }
+
+    form{
+
+        padding:20px;
+
+    }
+
+}
