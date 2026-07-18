@@ -11,6 +11,8 @@ const categoria = document.getElementById("categoria");
 const mensaje = document.getElementById("mensaje");
 const lista = document.getElementById("listaProductos");
 const contador = document.getElementById("contador");
+const spinner = document.getElementById("spinner");
+const modalRegistro = new bootstrap.Modal(document.getElementById("modalRegistro"));
 
 const errorNombre = document.getElementById("errorNombre");
 const errorDescripcion = document.getElementById("errorDescripcion");
@@ -136,13 +138,9 @@ formulario.addEventListener("submit", function(e){
 
     if(!valido){
 
-        mensaje.innerHTML =
+        mensaje.className = "alert alert-danger mt-3";
+        mensaje.textContent = "Existen errores en el formulario.";
 
-        `<div class="alert alert-danger">
-
-            Existen errores en el formulario.
-
-        </div>`;
 
         return;
 
@@ -160,24 +158,27 @@ formulario.addEventListener("submit", function(e){
 
     });
 
+spinner.classList.remove("d-none");
+
+setTimeout(function(){
+
+    spinner.classList.add("d-none");
+
     mostrarProductos();
+
+    modalRegistro.show();
 
     formulario.reset();
 
-    nombre.classList.remove("is-valid");
-    descripcion.classList.remove("is-valid");
-    categoria.classList.remove("is-valid");
+},1500);
 
-    mensaje.innerHTML =
+nombre.classList.remove("is-valid");
+descripcion.classList.remove("is-valid");
+categoria.classList.remove("is-valid");
 
-    `<div class="alert alert-success">
-
-        Producto registrado correctamente.
-
-    </div>`;
-
+mensaje.classList.remove("d-none");
+mensaje.textContent = "Producto registrado correctamente.";
 });
-
 // ==============================
 // Mostrar productos
 // ==============================
@@ -276,30 +277,21 @@ function eliminarProducto(indice){
 
     mostrarProductos();
 
+    mensaje.classList.remove("d-none");
+
     if(productos.length === 0){
 
-        mensaje.innerHTML =
-
-        `<div class="alert alert-warning">
-
-            Todos los productos fueron eliminados.
-
-        </div>`;
+        mensaje.className = "alert alert-warning mt-3";
+        mensaje.textContent = "Todos los productos fueron eliminados.";
 
     }else{
 
-        mensaje.innerHTML =
-
-        `<div class="alert alert-info">
-
-            Producto eliminado correctamente.
-
-        </div>`;
+        mensaje.className = "alert alert-info mt-3";
+        mensaje.textContent = "Producto eliminado correctamente.";
 
     }
 
 }
-
 // ==============================
 // Mostrar productos al iniciar
 // ==============================

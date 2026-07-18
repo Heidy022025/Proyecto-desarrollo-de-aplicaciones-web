@@ -20,64 +20,39 @@
     <!-- Menú de Navegación -->
     <!-- ====================================================== -->
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+        <a class="navbar-brand" href="#">SmartVentas Solutions</a>
 
-        <div class="container">
+        <button class="navbar-toggler" type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#menu">
 
-            <a class="navbar-brand" href="#">
-                SmartVentas Solutions
-            </a>
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-            <button class="navbar-toggler"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#menu">
+        <div class="collapse navbar-collapse" id="menu">
 
-                <span class="navbar-toggler-icon"></span>
+            <ul class="navbar-nav ms-auto">
 
-            </button>
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">Inicio</a>
+                </li>
 
-            <div class="collapse navbar-collapse" id="menu">
+                <li class="nav-item">
+                    <a class="nav-link" href="#formulario">Registrar</a>
+                </li>
 
-                <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#productos">Productos</a>
+                </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="#inicio">
-                            Inicio
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="#quienes-somos">
-                            Quiénes Somos
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="#servicios">
-                            Servicios
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="#registro">
-                            Registro
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="#contacto">
-                            Contacto
-                        </a>
-                    </li>
-
-                </ul>
-
-            </div>
+            </ul>
 
         </div>
 
-    </nav>
+    </div>
+</nav>
 
     <!-- ====================================================== -->
     <!-- FUTURA PLANTILLA base.html -->
@@ -531,7 +506,11 @@
 
             </form>
 
-            <div id="mensaje" class="mt-3"></div>
+            <div 
+            id="mensaje"
+            class="alert alert-success d-none mt-3">
+
+            </div>
 
             <h4 class="mt-4">
 
@@ -539,9 +518,16 @@
                 <span id="contador">0</span>
 
             </h4>
+            <div class="row" id="listaProductos"></div>
 
-            <div class="row" id="listaProductos">
+            <div id="spinner" class="text-center mt-4 d-none">
+                <div class="spinner-border text-primary" role="status"><div>
+                
+                <p class="mt-2">
 
+                prosesando informacion...
+
+                </p>
             </div>
 
         </section>
@@ -569,7 +555,40 @@
             </p>
 
         </aside>
+        <div
+        class="modal fade"
+        id="modalRegistro"
+        tabindex="-1">
 
+        <div class="modal-dialog">
+
+        <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title">
+            registro exitoso
+
+        </h5>
+        
+        <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="modal">
+        </button>
+        </div>
+
+        <div class="modal-body">
+            El producto ha sido registrado correctamente.
+        </div>
+        <div class="modal-footer">
+            <button
+                class="btn btn-primary"
+                data-bs-dismiss="modal">
+                Aceptar
+            </button>
+        </div>
+        </div>
+        </div>
+        </div>
     </main>
 
     <!-- ====================================================== -->
