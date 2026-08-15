@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}
+Proveedores
+{% endblock %}
+
+{% block content %}
+
+<h1 class="text-center mb-4">
+    Gestión de Proveedores
+</h1>
+
+<div class="card shadow">
+    <div class="card-body">
+
+        <h4>Proveedores</h4>
+
+        <p>
+            En este módulo se podrán registrar y administrar
+            los proveedores del negocio.
+        </p>
+
+        <a href="{{ url_for('inicio') }}" class="btn btn-primary">
+            Volver al inicio
+        </a>
+
+    </div>
+</div>
+
+{% endblock %}

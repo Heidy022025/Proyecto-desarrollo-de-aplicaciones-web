@@ -1,0 +1,469 @@
+{% extends "base.html" %}
+
+{% block title %}
+Sistema de Registro de Compras y Ventas
+{% endblock %}
+
+{% block content %}
+
+<header class="text-center mb-5">
+
+    <h1>
+        Sistema de Registro de Compras y Ventas
+    </h1>
+
+    <p>
+        Solución tecnológica para administrar inventarios,
+        compras, ventas y clientes de pequeños negocios.
+    </p>
+
+</header>
+
+
+<!-- ========================= -->
+<!-- INICIO -->
+<!-- ========================= -->
+
+<section id="inicio" class="hero text-center mb-5">
+
+    <h2>Bienvenido</h2>
+
+    <p>
+        Nuestro sistema facilita el registro de productos,
+        compras y ventas de forma rápida y organizada.
+        Está diseñado para pequeñas y medianas empresas
+        que necesitan controlar su inventario y generar
+        información confiable para la toma de decisiones.
+    </p>
+
+    <a href="#registro" class="btn btn-primary m-2">
+        Registrar Productos
+    </a>
+
+    <a href="#contacto" class="btn btn-success m-2">
+        Contáctanos
+    </a>
+
+</section>
+
+
+<!-- ========================= -->
+<!-- QUIÉNES SOMOS -->
+<!-- ========================= -->
+
+<section id="quienes-somos" class="mb-5">
+
+    <h2 class="text-center mb-4">
+        Quiénes Somos
+    </h2>
+
+    <div class="row align-items-center">
+
+        <div class="col-md-6">
+
+            <img
+                src="https://images.unsplash.com/photo-1556740749-887f6717d7e4"
+                class="img-fluid rounded shadow"
+                alt="Sistema de Inventario">
+
+        </div>
+
+        <div class="col-md-6">
+
+            <article>
+
+                <p>
+                    SmartVentas Solutions es un proyecto
+                    académico orientado al desarrollo de
+                    soluciones tecnológicas para apoyar la
+                    administración de pequeños negocios.
+                </p>
+
+                <p>
+                    El sistema permite registrar productos,
+                    controlar inventarios, administrar
+                    compras y ventas, mejorando la organización
+                    de la información empresarial.
+                </p>
+
+                <h5>
+                    Desarrollado por Heidy Quezada
+                </h5>
+
+            </article>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ========================= -->
+<!-- SERVICIOS -->
+<!-- ========================= -->
+
+<section id="servicios" class="mb-5">
+
+    <h2 class="text-center mb-4">
+        Servicios y Productos
+    </h2>
+
+    <div class="row">
+
+        <div class="col-md-4 mb-3">
+
+            <div class="card h-100 shadow">
+
+                <div class="card-body text-center">
+
+                    <h5 class="card-title">
+                        Inventario
+                    </h5>
+
+                    <p>
+                        Registro y control de productos disponibles
+                        para mantener actualizado el inventario.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-4 mb-3">
+
+            <div class="card h-100 shadow">
+
+                <div class="card-body text-center">
+
+                    <h5 class="card-title">
+                        Compras y Ventas
+                    </h5>
+
+                    <p>
+                        Administración de compras, ventas y clientes
+                        mediante una plataforma sencilla.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-4 mb-3">
+
+            <div class="card h-100 shadow">
+
+                <div class="card-body text-center">
+
+                    <h5 class="card-title">
+                        Reportes
+                    </h5>
+
+                    <p>
+                        Consulta rápida del inventario y de los
+                        productos registrados en el sistema.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ========================= -->
+<!-- VIDEO -->
+<!-- ========================= -->
+
+<section class="mb-5">
+
+    <h2 class="text-center mb-4">
+        Video Informativo
+    </h2>
+
+    <div class="video-container">
+
+        <iframe
+            src="https://www.youtube.com/embed/Uk4K4jp59qo"
+            title="Video Informativo"
+            allowfullscreen>
+        </iframe>
+
+    </div>
+
+</section>
+
+
+<!-- ========================= -->
+<!-- CONTACTO -->
+<!-- ========================= -->
+
+<section id="contacto" class="mb-5">
+
+    <h2 class="text-center mb-4">
+        Contacto
+    </h2>
+
+    <form>
+
+        <div class="mb-3">
+            <input
+                type="text"
+                class="form-control"
+                placeholder="Nombre completo">
+        </div>
+
+        <div class="mb-3">
+            <input
+                type="email"
+                class="form-control"
+                placeholder="Correo electrónico">
+        </div>
+
+        <div class="mb-3">
+            <input
+                type="text"
+                class="form-control"
+                placeholder="Asunto">
+        </div>
+
+        <div class="mb-3">
+            <textarea
+                class="form-control"
+                rows="5"
+                placeholder="Escriba su mensaje"></textarea>
+        </div>
+
+        <button class="btn btn-primary">
+            Enviar Mensaje
+        </button>
+
+    </form>
+
+    <div class="text-center mt-4">
+
+        <a
+            href="mailto:info@smartventas.com"
+            class="btn btn-danger m-2">
+            Correo
+        </a>
+
+        <a
+            href="https://www.facebook.com/heidy.quezada.649842/about?locale=es_LA"
+            target="_blank"
+            class="btn btn-primary m-2">
+            Facebook
+        </a>
+
+        <a
+            href="https://www.instagram.com"
+            target="_blank"
+            class="btn btn-warning m-2">
+            Instagram
+        </a>
+
+    </div>
+
+</section>
+
+
+<!-- ========================= -->
+<!-- REGISTRO DE PRODUCTOS -->
+<!-- ========================= -->
+
+<section id="registro" class="mt-5">
+
+    <h2 class="text-center mb-4">
+        Registro de Productos
+    </h2>
+
+    <form id="formProducto">
+
+        <div class="mb-3">
+
+            <label class="form-label">
+                Nombre del producto
+            </label>
+
+            <input
+                type="text"
+                id="nombre"
+                class="form-control"
+                placeholder="Nombre del producto">
+
+            <small id="errorNombre" class="text-danger"></small>
+
+        </div>
+
+
+        <div class="mb-3">
+
+            <label class="form-label">
+                Descripción
+            </label>
+
+            <textarea
+                id="descripcion"
+                class="form-control"
+                rows="3"
+                placeholder="Descripción del producto"></textarea>
+
+            <small id="errorDescripcion" class="text-danger"></small>
+
+        </div>
+
+
+        <div class="mb-3">
+
+            <label class="form-label">
+                Categoría
+            </label>
+
+            <select id="categoria" class="form-select">
+
+                <option value="">
+                    Seleccione una categoría
+                </option>
+
+                <option>Electrónica</option>
+                <option>Alimentos</option>
+                <option>Ropa</option>
+                <option>Oficina</option>
+
+            </select>
+
+            <small id="errorCategoria" class="text-danger"></small>
+
+        </div>
+
+
+        <button class="btn btn-success">
+            Registrar Producto
+        </button>
+
+    </form>
+
+
+    <div
+        id="mensaje"
+        class="alert alert-success d-none mt-3">
+    </div>
+
+
+    <h4 class="mt-4">
+
+        Productos registrados:
+        <span id="contador">0</span>
+
+    </h4>
+
+
+    <div class="row" id="listaProductos"></div>
+
+
+    <div id="spinner" class="text-center mt-4 d-none">
+
+        <div
+            class="spinner-border text-primary"
+            role="status">
+        </div>
+
+        <p class="mt-2">
+            Procesando información...
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- ========================= -->
+<!-- INFORMACIÓN ADICIONAL -->
+<!-- ========================= -->
+
+<aside class="mt-5">
+
+    <h3>Información Adicional</h3>
+
+    <p>
+        Promoción: Acceso gratuito durante el primer mes
+        para nuevos usuarios del sistema.
+    </p>
+
+    <p>
+        Horario de atención:
+        Lunes a Viernes de 08:00 a 18:00.
+    </p>
+
+    <p>
+        Próximamente se incorporará la integración con
+        facturación electrónica y reportes avanzados.
+    </p>
+
+</aside>
+
+
+<!-- ========================= -->
+<!-- MODAL -->
+<!-- ========================= -->
+
+<div
+    class="modal fade"
+    id="modalRegistro"
+    tabindex="-1">
+
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+                    Registro exitoso
+                </h5>
+
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+
+            <div class="modal-body">
+
+                El producto ha sido registrado correctamente.
+
+            </div>
+
+
+            <div class="modal-footer">
+
+                <button
+                    class="btn btn-primary"
+                    data-bs-dismiss="modal">
+
+                    Aceptar
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
