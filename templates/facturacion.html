@@ -1,30 +1,96 @@
 {% extends "base.html" %}
 
 {% block title %}
-Facturación
+Facturación - SmartVentas
 {% endblock %}
 
 {% block content %}
 
-<h1 class="text-center mb-4">
-    Módulo de Facturación
-</h1>
+<div class="container">
 
-<div class="card shadow">
-    <div class="card-body">
+    <div class="mb-4">
+        <h1>Facturación</h1>
 
-        <h4>Facturación</h4>
-
-        <p>
-            En este módulo se podrá gestionar la información
-            relacionada con las ventas y la facturación del negocio.
+        <p class="text-muted">
+            Registro de facturas generadas en el sistema.
         </p>
+    </div>
 
-        <a href="{{ url_for('inicio') }}" class="btn btn-primary">
-            Volver al inicio
-        </a>
+
+    <div class="card shadow-sm">
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle">
+
+                    <thead class="table-dark">
+
+                        <tr>
+                            <th>Número</th>
+                            <th>Cliente</th>
+                            <th>Fecha</th>
+                            <th>Total</th>
+                            <th>Estado</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for factura in facturas %}
+
+                        <tr>
+
+                            <td>
+                                {{ factura.numero }}
+                            </td>
+
+                            <td>
+                                {{ factura.cliente }}
+                            </td>
+
+                            <td>
+                                {{ factura.fecha }}
+                            </td>
+
+                            <td>
+                                ${{ "%.2f"|format(factura.total) }}
+                            </td>
+
+                            <td>
+
+                                {% if factura.estado == "Pagada" %}
+
+                                    <span class="badge bg-success">
+                                        {{ factura.estado|upper }}
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="badge bg-warning text-dark">
+                                        {{ factura.estado|upper }}
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
 
     </div>
+
 </div>
 
 {% endblock %}

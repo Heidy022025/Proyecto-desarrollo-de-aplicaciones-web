@@ -100,6 +100,205 @@ Sistema de Registro de Compras y Ventas
 
 
 <!-- ========================= -->
+<!-- CONTENIDO DINÁMICO -->
+<!-- ========================= -->
+
+<section id="resumen" class="mb-5">
+
+    <div class="container">
+
+        <div class="text-center mb-5">
+
+            <h2 class="display-6 fw-bold">
+                Resumen de {{ nombre_sistema }}
+            </h2>
+
+            <p class="lead text-muted">
+                Información actual del sistema.
+            </p>
+
+        </div>
+
+
+        <div class="row g-4">
+
+
+            <!-- PRODUCTOS -->
+
+            <div class="col-md-3">
+
+                <div class="card text-center shadow-sm h-100">
+
+                    <div class="card-body">
+
+                        <h5 class="card-title">
+                            Productos
+                        </h5>
+
+                        <p class="display-6 fw-bold">
+                            {{ resumen.productos }}
+                        </p>
+
+                        {% if resumen.productos > 0 %}
+
+                            <span class="badge bg-success">
+                                Registros disponibles
+                            </span>
+
+                        {% else %}
+
+                            <span class="badge bg-danger">
+                                Sin registros
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- CLIENTES -->
+
+            <div class="col-md-3">
+
+                <div class="card text-center shadow-sm h-100">
+
+                    <div class="card-body">
+
+                        <h5 class="card-title">
+                            Clientes
+                        </h5>
+
+                        <p class="display-6 fw-bold">
+                            {{ resumen.clientes }}
+                        </p>
+
+                        {% if resumen.clientes > 0 %}
+
+                            <span class="badge bg-success">
+                                Registros disponibles
+                            </span>
+
+                        {% else %}
+
+                            <span class="badge bg-danger">
+                                Sin registros
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- PROVEEDORES -->
+
+            <div class="col-md-3">
+
+                <div class="card text-center shadow-sm h-100">
+
+                    <div class="card-body">
+
+                        <h5 class="card-title">
+                            Proveedores
+                        </h5>
+
+                        <p class="display-6 fw-bold">
+                            {{ resumen.proveedores }}
+                        </p>
+
+                        {% if resumen.proveedores > 0 %}
+
+                            <span class="badge bg-success">
+                                Registros disponibles
+                            </span>
+
+                        {% else %}
+
+                            <span class="badge bg-danger">
+                                Sin registros
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- FACTURAS -->
+
+            <div class="col-md-3">
+
+                <div class="card text-center shadow-sm h-100">
+
+                    <div class="card-body">
+
+                        <h5 class="card-title">
+                            Facturas
+                        </h5>
+
+                        <p class="display-6 fw-bold">
+                            {{ resumen.facturas }}
+                        </p>
+
+                        {% if resumen.facturas > 0 %}
+
+                            <span class="badge bg-success">
+                                Registros disponibles
+                            </span>
+
+                        {% else %}
+
+                            <span class="badge bg-danger">
+                                Sin registros
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="text-center mt-5">
+
+            <a
+                href="{{ url_for('productos') }}"
+                class="btn btn-primary me-2">
+
+                Ver productos
+
+            </a>
+
+            <a
+                href="{{ url_for('facturacion') }}"
+                class="btn btn-outline-dark">
+
+                Ver facturación
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ========================= -->
 <!-- SERVICIOS -->
 <!-- ========================= -->
 
@@ -217,31 +416,40 @@ Sistema de Registro de Compras y Ventas
     <form>
 
         <div class="mb-3">
+
             <input
                 type="text"
                 class="form-control"
                 placeholder="Nombre completo">
+
         </div>
 
         <div class="mb-3">
+
             <input
                 type="email"
                 class="form-control"
                 placeholder="Correo electrónico">
+
         </div>
 
         <div class="mb-3">
+
             <input
                 type="text"
                 class="form-control"
                 placeholder="Asunto">
+
         </div>
 
         <div class="mb-3">
+
             <textarea
                 class="form-control"
                 rows="5"
-                placeholder="Escriba su mensaje"></textarea>
+                placeholder="Escriba su mensaje">
+            </textarea>
+
         </div>
 
         <button class="btn btn-primary">
@@ -250,26 +458,35 @@ Sistema de Registro de Compras y Ventas
 
     </form>
 
+
     <div class="text-center mt-4">
 
         <a
             href="mailto:info@smartventas.com"
             class="btn btn-danger m-2">
+
             Correo
+
         </a>
+
 
         <a
             href="https://www.facebook.com/heidy.quezada.649842/about?locale=es_LA"
             target="_blank"
             class="btn btn-primary m-2">
+
             Facebook
+
         </a>
+
 
         <a
             href="https://www.instagram.com"
             target="_blank"
             class="btn btn-warning m-2">
+
             Instagram
+
         </a>
 
     </div>
@@ -287,7 +504,9 @@ Sistema de Registro de Compras y Ventas
         Registro de Productos
     </h2>
 
+
     <form id="formProducto">
+
 
         <div class="mb-3">
 
@@ -301,7 +520,10 @@ Sistema de Registro de Compras y Ventas
                 class="form-control"
                 placeholder="Nombre del producto">
 
-            <small id="errorNombre" class="text-danger"></small>
+            <small
+                id="errorNombre"
+                class="text-danger">
+            </small>
 
         </div>
 
@@ -316,9 +538,13 @@ Sistema de Registro de Compras y Ventas
                 id="descripcion"
                 class="form-control"
                 rows="3"
-                placeholder="Descripción del producto"></textarea>
+                placeholder="Descripción del producto">
+            </textarea>
 
-            <small id="errorDescripcion" class="text-danger"></small>
+            <small
+                id="errorDescripcion"
+                class="text-danger">
+            </small>
 
         </div>
 
@@ -329,7 +555,9 @@ Sistema de Registro de Compras y Ventas
                 Categoría
             </label>
 
-            <select id="categoria" class="form-select">
+            <select
+                id="categoria"
+                class="form-select">
 
                 <option value="">
                     Seleccione una categoría
@@ -342,7 +570,10 @@ Sistema de Registro de Compras y Ventas
 
             </select>
 
-            <small id="errorCategoria" class="text-danger"></small>
+            <small
+                id="errorCategoria"
+                class="text-danger">
+            </small>
 
         </div>
 
@@ -363,15 +594,23 @@ Sistema de Registro de Compras y Ventas
     <h4 class="mt-4">
 
         Productos registrados:
-        <span id="contador">0</span>
+
+        <span id="contador">
+            0
+        </span>
 
     </h4>
 
 
-    <div class="row" id="listaProductos"></div>
+    <div
+        class="row"
+        id="listaProductos">
+    </div>
 
 
-    <div id="spinner" class="text-center mt-4 d-none">
+    <div
+        id="spinner"
+        class="text-center mt-4 d-none">
 
         <div
             class="spinner-border text-primary"
@@ -393,7 +632,9 @@ Sistema de Registro de Compras y Ventas
 
 <aside class="mt-5">
 
-    <h3>Información Adicional</h3>
+    <h3>
+        Información Adicional
+    </h3>
 
     <p>
         Promoción: Acceso gratuito durante el primer mes
@@ -465,5 +706,6 @@ Sistema de Registro de Compras y Ventas
     </div>
 
 </div>
+
 
 {% endblock %}

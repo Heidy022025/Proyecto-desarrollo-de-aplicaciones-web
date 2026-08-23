@@ -1,30 +1,73 @@
 {% extends "base.html" %}
 
 {% block title %}
-Clientes
+Clientes - SmartVentas
 {% endblock %}
 
 {% block content %}
 
-<h1 class="text-center mb-4">
-    Gestión de Clientes
-</h1>
+<div class="container">
 
-<div class="card shadow">
-    <div class="card-body">
-
-        <h4>Clientes</h4>
-
-        <p>
-            En este módulo se podrán registrar y administrar
-            los clientes del negocio.
+    <div class="mb-4">
+        <h1>Clientes</h1>
+        <p class="text-muted">
+            Registro de clientes del sistema.
         </p>
+    </div>
 
-        <a href="{{ url_for('inicio') }}" class="btn btn-primary">
-            Volver al inicio
-        </a>
+    <div class="row">
+
+        {% for cliente in clientes %}
+
+        <div class="col-md-4 mb-4">
+
+            <div class="card h-100 shadow-sm">
+
+                <div class="card-body">
+
+                    <h5 class="card-title">
+                        {{ cliente.nombre|upper }}
+                    </h5>
+
+                    <p class="card-text">
+                        <strong>Cédula:</strong>
+                        {{ cliente.cedula }}
+                    </p>
+
+                    <p class="card-text">
+                        <strong>Teléfono:</strong>
+                        {{ cliente.telefono }}
+                    </p>
+
+                    <p class="card-text">
+                        <strong>Correo:</strong>
+                        {{ cliente.correo }}
+                    </p>
+
+                    {% if cliente.correo %}
+
+                        <span class="badge bg-success">
+                            Cliente registrado
+                        </span>
+
+                    {% else %}
+
+                        <span class="badge bg-warning text-dark">
+                            Sin correo registrado
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
 
     </div>
+
 </div>
 
 {% endblock %}

@@ -1,30 +1,73 @@
 {% extends "base.html" %}
 
 {% block title %}
-Proveedores
+Proveedores - SmartVentas
 {% endblock %}
 
 {% block content %}
 
-<h1 class="text-center mb-4">
-    Gestión de Proveedores
-</h1>
+<div class="container">
 
-<div class="card shadow">
-    <div class="card-body">
-
-        <h4>Proveedores</h4>
-
-        <p>
-            En este módulo se podrán registrar y administrar
-            los proveedores del negocio.
+    <div class="mb-4">
+        <h1>Proveedores</h1>
+        <p class="text-muted">
+            Registro de proveedores del sistema.
         </p>
+    </div>
 
-        <a href="{{ url_for('inicio') }}" class="btn btn-primary">
-            Volver al inicio
-        </a>
+    <div class="row">
+
+        {% for proveedor in proveedores %}
+
+        <div class="col-md-4 mb-4">
+
+            <div class="card h-100 shadow-sm">
+
+                <div class="card-body">
+
+                    <h5 class="card-title">
+                        {{ proveedor.empresa }}
+                    </h5>
+
+                    <p class="card-text">
+                        <strong>Contacto:</strong>
+                        {{ proveedor.contacto }}
+                    </p>
+
+                    <p class="card-text">
+                        <strong>Teléfono:</strong>
+                        {{ proveedor.telefono }}
+                    </p>
+
+                    <p class="card-text">
+                        <strong>Producto:</strong>
+                        {{ proveedor.producto }}
+                    </p>
+
+                    {% if proveedor.telefono %}
+
+                        <span class="badge bg-success">
+                            Proveedor activo
+                        </span>
+
+                    {% else %}
+
+                        <span class="badge bg-danger">
+                            Información incompleta
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
 
     </div>
+
 </div>
 
-{% endblock %}
+{% endblock %}S
