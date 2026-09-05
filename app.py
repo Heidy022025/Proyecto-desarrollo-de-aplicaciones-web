@@ -1,9 +1,21 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect, url_for
+
+from forms.producto_form import ProductoForm
+from forms.cliente_form import ClienteForm
+from forms.proveedor_form import ProveedorForm
+from forms.facturacion_form import FacturacionForm
+
 
 app = Flask(__name__)
 
+# Configuración de Flask-WTF y protección CSRF
+app.config["SECRET_KEY"] = "smartventas-clave-secreta-2026"
 
-# Página de inicio
+
+# =========================================================
+# PÁGINA DE INICIO
+# =========================================================
+
 @app.route('/')
 def inicio():
 
@@ -23,7 +35,10 @@ def inicio():
     )
 
 
-# Módulo de productos
+# =========================================================
+# PRODUCTOS
+# =========================================================
+
 @app.route('/productos')
 def productos():
 
@@ -54,7 +69,34 @@ def productos():
     )
 
 
-# Módulo de clientes
+@app.route('/productos/nuevo', methods=['GET', 'POST'])
+def formulario_producto():
+
+    form = ProductoForm()
+
+    if form.validate_on_submit():
+
+        producto = {
+            "nombre": form.nombre.data,
+            "categoria": form.categoria.data,
+            "precio": form.precio.data,
+            "stock": form.stock.data
+        }
+
+        print("Producto registrado:", producto)
+
+        return redirect(url_for('productos'))
+
+    return render_template(
+        'formulario_producto.html',
+        form=form
+    )
+
+
+# =========================================================
+# CLIENTES
+# =========================================================
+
 @app.route('/clientes')
 def clientes():
 
@@ -85,7 +127,34 @@ def clientes():
     )
 
 
-# Módulo de proveedores
+@app.route('/clientes/nuevo', methods=['GET', 'POST'])
+def formulario_cliente():
+
+    form = ClienteForm()
+
+    if form.validate_on_submit():
+
+        cliente = {
+            "nombre": form.nombre.data,
+            "cedula": form.cedula.data,
+            "telefono": form.telefono.data,
+            "correo": form.correo.data
+        }
+
+        print("Cliente registrado:", cliente)
+
+        return redirect(url_for('clientes'))
+
+    return render_template(
+        'formulario_cliente.html',
+        form=form
+    )
+
+
+# =========================================================
+# PROVEEDORES
+# =========================================================
+
 @app.route('/proveedores')
 def proveedores():
 
@@ -116,7 +185,34 @@ def proveedores():
     )
 
 
-# Módulo de facturación
+@app.route('/proveedores/nuevo', methods=['GET', 'POST'])
+def formulario_proveedor():
+
+    form = ProveedorForm()
+
+    if form.validate_on_submit():
+
+        proveedor = {
+            "empresa": form.empresa.data,
+            "contacto": form.contacto.data,
+            "telefono": form.telefono.data,
+            "producto": form.producto.data
+        }
+
+        print("Proveedor registrado:", proveedor)
+
+        return redirect(url_for('proveedores'))
+
+    return render_template(
+        'formulario_proveedor.html',
+        form=form
+    )
+
+
+# =========================================================
+# FACTURACIÓN
+# =========================================================
+
 @app.route('/facturacion')
 def facturacion():
 
@@ -142,6 +238,34 @@ def facturacion():
         facturas=facturas
     )
 
+
+@app.route('/facturacion/nueva', methods=['GET', 'POST'])
+def formulario_facturacion():
+
+    form = FacturacionForm()
+
+    if form.validate_on_submit():
+
+        factura = {
+            "cliente": form.cliente.data,
+            "producto": form.producto.data,
+            "cantidad": form.cantidad.data,
+            "precio": form.precio.data
+        }
+
+        print("Factura registrada:", factura)
+
+        return redirect(url_for('facturacion'))
+
+    return render_template(
+        'formulario_facturacion.html',
+        form=form
+    )
+
+
+# =========================================================
+# EJECUTAR APLICACIÓN
+# =========================================================
 
 if __name__ == '__main__':
     app.run(debug=True)

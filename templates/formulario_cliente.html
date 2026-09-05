@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %}
+Registrar cliente
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header">
+            <h2 class="mb-0">Registrar cliente</h2>
+        </div>
+
+        <div class="card-body">
+
+            <form method="POST">
+
+                {{ form.hidden_tag() }}
+
+                <!-- Nombre -->
+                <div class="mb-3">
+                    {{ form.nombre.label(class="form-label") }}
+
+                    {{ form.nombre(
+                        class="form-control",
+                        placeholder="Ingrese el nombre completo"
+                    ) }}
+
+                    {% for error in form.nombre.errors %}
+                        <div class="text-danger mt-1">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Cédula -->
+                <div class="mb-3">
+                    {{ form.cedula.label(class="form-label") }}
+
+                    {{ form.cedula(
+                        class="form-control",
+                        placeholder="Ingrese la cédula"
+                    ) }}
+
+                    {% for error in form.cedula.errors %}
+                        <div class="text-danger mt-1">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Teléfono -->
+                <div class="mb-3">
+                    {{ form.telefono.label(class="form-label") }}
+
+                    {{ form.telefono(
+                        class="form-control",
+                        placeholder="Ingrese el número de teléfono"
+                    ) }}
+
+                    {% for error in form.telefono.errors %}
+                        <div class="text-danger mt-1">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Correo -->
+                <div class="mb-3">
+                    {{ form.correo.label(class="form-label") }}
+
+                    {{ form.correo(
+                        class="form-control",
+                        placeholder="ejemplo@correo.com"
+                    ) }}
+
+                    {% for error in form.correo.errors %}
+                        <div class="text-danger mt-1">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Botones -->
+                <div class="mt-4">
+
+                    {{ form.submit(class="btn btn-primary") }}
+
+                    <a href="{{ url_for('clientes') }}"
+                       class="btn btn-secondary">
+                        Cancelar
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

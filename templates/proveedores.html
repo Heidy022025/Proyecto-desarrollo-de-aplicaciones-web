@@ -1,73 +1,76 @@
 {% extends "base.html" %}
 
-{% block title %}
-Proveedores - SmartVentas
-{% endblock %}
+{% block title %}Proveedores - SmartVentas Solutions{% endblock %}
 
 {% block content %}
 
-<div class="container">
+<div class="container mt-4">
 
-    <div class="mb-4">
-        <h1>Proveedores</h1>
-        <p class="text-muted">
-            Registro de proveedores del sistema.
-        </p>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1>Proveedores</h1>
+            <p class="text-muted">Gestión de proveedores del sistema</p>
+        </div>
+
+        <a href="{{ url_for('formulario_proveedor') }}" class="btn btn-primary">
+            + Nuevo proveedor
+        </a>
     </div>
 
-    <div class="row">
+    <div class="card shadow-sm">
 
-        {% for proveedor in proveedores %}
+        <div class="card-header">
+            <h5 class="mb-0">Lista de proveedores</h5>
+        </div>
 
-        <div class="col-md-4 mb-4">
+        <div class="card-body">
 
-            <div class="card h-100 shadow-sm">
+            {% if proveedores %}
 
-                <div class="card-body">
+            <div class="table-responsive">
 
-                    <h5 class="card-title">
-                        {{ proveedor.empresa }}
-                    </h5>
+                <table class="table table-striped table-hover">
 
-                    <p class="card-text">
-                        <strong>Contacto:</strong>
-                        {{ proveedor.contacto }}
-                    </p>
+                    <thead>
+                        <tr>
+                            <th>Empresa</th>
+                            <th>Contacto</th>
+                            <th>Teléfono</th>
+                            <th>Producto</th>
+                        </tr>
+                    </thead>
 
-                    <p class="card-text">
-                        <strong>Teléfono:</strong>
-                        {{ proveedor.telefono }}
-                    </p>
+                    <tbody>
 
-                    <p class="card-text">
-                        <strong>Producto:</strong>
-                        {{ proveedor.producto }}
-                    </p>
+                        {% for proveedor in proveedores %}
 
-                    {% if proveedor.telefono %}
+                        <tr>
+                            <td>{{ proveedor.empresa }}</td>
+                            <td>{{ proveedor.contacto }}</td>
+                            <td>{{ proveedor.telefono }}</td>
+                            <td>{{ proveedor.producto }}</td>
+                        </tr>
 
-                        <span class="badge bg-success">
-                            Proveedor activo
-                        </span>
+                        {% endfor %}
 
-                    {% else %}
+                    </tbody>
 
-                        <span class="badge bg-danger">
-                            Información incompleta
-                        </span>
-
-                    {% endif %}
-
-                </div>
+                </table>
 
             </div>
 
-        </div>
+            {% else %}
 
-        {% endfor %}
+            <div class="alert alert-info text-center">
+                No hay proveedores registrados.
+            </div>
+
+            {% endif %}
+
+        </div>
 
     </div>
 
 </div>
 
-{% endblock %}S
+{% endblock %}

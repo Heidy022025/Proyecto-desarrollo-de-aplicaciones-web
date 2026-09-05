@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block title %}
+Nueva factura
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header">
+            <h2 class="mb-0">Registrar factura</h2>
+        </div>
+
+        <div class="card-body">
+
+            <form method="POST">
+
+                {{ form.hidden_tag() }}
+
+                <!-- Cliente -->
+                <div class="mb-3">
+
+                    {{ form.cliente.label(class="form-label") }}
+
+                    {{ form.cliente(
+                        class="form-control",
+                        placeholder="Ingrese el nombre del cliente"
+                    ) }}
+
+                    {% for error in form.cliente.errors %}
+                        <div class="text-danger mt-1">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+
+                </div>
+
+                <!-- Producto -->
+                <div class="mb-3">
+
+                    {{ form.producto.label(class="form-label") }}
+
+                    {{ form.producto(
+                        class="form-control",
+                        placeholder="Ingrese el producto"
+                    ) }}
+
+                    {% for error in form.producto.errors %}
+                        <div class="text-danger mt-1">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+
+                </div>
+
+                <!-- Cantidad -->
+                <div class="mb-3">
+
+                    {{ form.cantidad.label(class="form-label") }}
+
+                    {{ form.cantidad(
+                        class="form-control",
+                        placeholder="Ingrese la cantidad"
+                    ) }}
+
+                    {% for error in form.cantidad.errors %}
+                        <div class="text-danger mt-1">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+
+                </div>
+
+                <!-- Precio -->
+                <div class="mb-3">
+
+                    {{ form.precio.label(class="form-label") }}
+
+                    {{ form.precio(
+                        class="form-control",
+                        placeholder="Ingrese el precio"
+                    ) }}
+
+                    {% for error in form.precio.errors %}
+                        <div class="text-danger mt-1">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+
+                </div>
+
+                <!-- Botones -->
+                <div class="mt-4">
+
+                    {{ form.submit(class="btn btn-primary") }}
+
+                    <a href="{{ url_for('facturacion') }}"
+                       class="btn btn-secondary">
+                        Cancelar
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

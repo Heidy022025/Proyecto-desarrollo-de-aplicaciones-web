@@ -22,23 +22,7 @@ const errorCategoria = document.getElementById("errorCategoria");
 // Arreglo de objetos
 // ==============================
 
-let productos = [
 
-    {
-        nombre: "Laptop Lenovo",
-        descripcion: "Laptop Core i5 con 8 GB de memoria RAM.",
-        categoria: "Electrónica",
-        fecha: "Producto inicial"
-    },
-
-    {
-        nombre: "Cuaderno Universitario",
-        descripcion: "Cuaderno de 100 hojas para uso académico.",
-        categoria: "Oficina",
-        fecha: "Producto inicial"
-    }
-
-];
 
 // ==============================
 // Validaciones

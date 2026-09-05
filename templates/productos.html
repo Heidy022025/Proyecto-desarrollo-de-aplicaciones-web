@@ -9,6 +9,7 @@ Productos - SmartVentas
 <div class="container">
 
     <div class="d-flex justify-content-between align-items-center mb-4">
+
         <div>
             <h1>Productos</h1>
             <p class="text-muted">
@@ -16,9 +17,19 @@ Productos - SmartVentas
             </p>
         </div>
 
-        <span class="badge bg-primary fs-6">
-            Total: {{ productos|length }}
-        </span>
+        <div class="d-flex align-items-center gap-2">
+
+            <span class="badge bg-primary fs-6">
+                Total: {{ productos|length }}
+            </span>
+
+            <a href="{{ url_for('formulario_producto') }}"
+               class="btn btn-primary">
+                + Nuevo producto
+            </a>
+
+        </div>
+
     </div>
 
 
@@ -37,24 +48,18 @@ Productos - SmartVentas
                     </h5>
 
                     <p class="card-text">
-
                         <strong>Categoría:</strong>
                         {{ producto.categoria }}
-
                     </p>
 
                     <p class="card-text">
-
                         <strong>Precio:</strong>
                         ${{ "%.2f"|format(producto.precio) }}
-
                     </p>
 
                     <p class="card-text">
-
                         <strong>Stock:</strong>
                         {{ producto.stock }}
-
                     </p>
 
 

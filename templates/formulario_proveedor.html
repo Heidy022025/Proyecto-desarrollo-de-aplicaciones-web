@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %}Nuevo Proveedor - SmartVentas Solutions{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-8">
+
+            <div class="card shadow-sm">
+
+                <div class="card-header">
+                    <h4 class="mb-0">Registrar nuevo proveedor</h4>
+                </div>
+
+                <div class="card-body">
+
+                    <form method="POST">
+
+                        {{ form.hidden_tag() }}
+
+                        <div class="mb-3">
+                            {{ form.empresa.label(class="form-label") }}
+                            {{ form.empresa(class="form-control") }}
+
+                            {% for error in form.empresa.errors %}
+                                <div class="text-danger">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form.contacto.label(class="form-label") }}
+                            {{ form.contacto(class="form-control") }}
+
+                            {% for error in form.contacto.errors %}
+                                <div class="text-danger">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form.telefono.label(class="form-label") }}
+                            {{ form.telefono(class="form-control") }}
+
+                            {% for error in form.telefono.errors %}
+                                <div class="text-danger">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form.producto.label(class="form-label") }}
+                            {{ form.producto(class="form-control") }}
+
+                            {% for error in form.producto.errors %}
+                                <div class="text-danger">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="d-flex gap-2">
+
+                            {{ form.submit(class="btn btn-success") }}
+
+                            <a href="{{ url_for('proveedores') }}"
+                               class="btn btn-secondary">
+                                Cancelar
+                            </a>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
