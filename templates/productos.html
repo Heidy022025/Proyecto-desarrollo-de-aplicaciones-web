@@ -12,8 +12,9 @@ Productos - SmartVentas
 
         <div>
             <h1>Productos</h1>
+
             <p class="text-muted">
-                Registro de productos disponibles en el sistema.
+                Registro de productos almacenados en la base de datos.
             </p>
         </div>
 
@@ -48,18 +49,31 @@ Productos - SmartVentas
                     </h5>
 
                     <p class="card-text">
+
+                        <strong>ID:</strong>
+                        {{ producto.id }}
+
+                    </p>
+
+                    <p class="card-text">
+
                         <strong>Categoría:</strong>
                         {{ producto.categoria }}
+
                     </p>
 
                     <p class="card-text">
+
                         <strong>Precio:</strong>
                         ${{ "%.2f"|format(producto.precio) }}
+
                     </p>
 
                     <p class="card-text">
+
                         <strong>Stock:</strong>
                         {{ producto.stock }}
+
                     </p>
 
 
@@ -79,6 +93,16 @@ Productos - SmartVentas
 
                 </div>
 
+            </div>
+
+        </div>
+
+        {% else %}
+
+        <div class="col-12">
+
+            <div class="alert alert-info">
+                No existen productos registrados todavía.
             </div>
 
         </div>

@@ -1,15 +1,55 @@
 from flask import Flask, render_template, redirect, url_for
-
 from forms.producto_form import ProductoForm
 from forms.cliente_form import ClienteForm
 from forms.proveedor_form import ProveedorForm
 from forms.facturacion_form import FacturacionForm
+
+import sqlite3
+import os
 
 
 app = Flask(__name__)
 
 # Configuración de Flask-WTF y protección CSRF
 app.config["SECRET_KEY"] = "smartventas-clave-secreta-2026"
+
+
+# =========================================================
+# CONFIGURACIÓN DE SQLITE
+# =========================================================
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_DIR = os.path.join(BASE_DIR, "data")
+DATABASE = os.path.join(DATA_DIR, "ferreteria.db")
+
+
+def conectar_bd():
+    os.makedirs(DATA_DIR, exist_ok=True)
+    conn = sqlite3.connect(DATABASE)
+    conn.row_factory = sqlite3.Row
+    return conn
+
+
+def inicializar_bd():
+
+    conn = conectar_bd()
+
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS productos (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nombre TEXT NOT NULL,
+            categoria TEXT NOT NULL,
+            precio REAL NOT NULL,
+            stock INTEGER NOT NULL
+        )
+    """)
+
+    conn.commit()
+    conn.close()
+
+
+# Crear la base de datos y la tabla al iniciar la aplicación
+inicializar_bd()
 
 
 # =========================================================
@@ -42,26 +82,18 @@ def inicio():
 @app.route('/productos')
 def productos():
 
-    productos = [
-        {
-            "nombre": "Laptop Lenovo",
-            "categoria": "Tecnología",
-            "precio": 850.00,
-            "stock": 5
-        },
-        {
-            "nombre": "Mouse inalámbrico",
-            "categoria": "Accesorios",
-            "precio": 14.00,
-            "stock": 12
-        },
-        {
-            "nombre": "Teclado USB",
-            "categoria": "Accesorios",
-            "precio": 25.00,
-            "stock": 0
-        }
-    ]
+    # Conectar con SQLite
+    conn = conectar_bd()
+
+    # SELECT para recuperar los productos
+    productos = conn.execute("""
+        SELECT id, nombre, categoria, precio, stock
+        FROM productos
+        ORDER BY id DESC
+    """).fetchall()
+
+    # Cerrar conexión
+    conn.close()
 
     return render_template(
         'productos.html',
@@ -74,16 +106,27 @@ def formulario_producto():
 
     form = ProductoForm()
 
+    # Validar formulario antes de guardar
     if form.validate_on_submit():
 
-        producto = {
-            "nombre": form.nombre.data,
-            "categoria": form.categoria.data,
-            "precio": form.precio.data,
-            "stock": form.stock.data
-        }
+        conn = conectar_bd()
 
-        print("Producto registrado:", producto)
+        # INSERT utilizando parámetros ?
+        conn.execute("""
+            INSERT INTO productos (nombre, categoria, precio, stock)
+            VALUES (?, ?, ?, ?)
+        """, (
+            form.nombre.data,
+            form.categoria.data,
+            float(form.precio.data),
+            form.stock.data
+     ))
+        
+        # Guardar cambios
+        conn.commit()
+
+        # Cerrar conexión
+        conn.close()
 
         return redirect(url_for('productos'))
 
