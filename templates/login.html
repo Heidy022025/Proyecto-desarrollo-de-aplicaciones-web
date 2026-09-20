@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}Iniciar sesión - SmartVentas Solutions{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+
+            <div class="card shadow">
+                <div class="card-body p-4">
+
+                    <h2 class="text-center mb-4">
+                        Iniciar sesión
+                    </h2>
+
+                    <p class="text-center text-muted mb-4">
+                        Acceda a SmartVentas Solutions.
+                    </p>
+
+                    <form method="POST">
+
+                        {{ form.hidden_tag() }}
+
+                        <div class="mb-3">
+                            {{ form.usuario.label(class="form-label") }}
+
+                            {{ form.usuario(
+                                class="form-control",
+                                placeholder="Ingrese su usuario"
+                            ) }}
+
+                            {% for error in form.usuario.errors %}
+                                <div class="text-danger small mt-1">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form.password.label(class="form-label") }}
+
+                            {{ form.password(
+                                class="form-control",
+                                placeholder="Ingrese su contraseña"
+                            ) }}
+
+                            {% for error in form.password.errors %}
+                                <div class="text-danger small mt-1">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="d-grid">
+                            {{ form.submit(
+                                class="btn btn-primary"
+                            ) }}
+                        </div>
+
+                    </form>
+
+                    <div class="text-center mt-4">
+                        <span class="text-muted">
+                            ¿No tiene una cuenta?
+                        </span>
+
+                        <a href="{{ url_for('registro') }}">
+                            Registrarse
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

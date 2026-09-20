@@ -1,30 +1,20 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
-from wtforms.validators import DataRequired, Length
+from wtforms import StringField, EmailField, SubmitField
+from wtforms.validators import DataRequired, Length, Email
 
 
 class ProveedorForm(FlaskForm):
 
-    empresa = StringField(
-        "Empresa",
+    nombre = StringField(
+        "Nombre del proveedor",
         validators=[
-            DataRequired(message="La empresa es obligatoria."),
-            Length(
-                min=2,
-                max=100,
-                message="La empresa debe tener entre 2 y 100 caracteres."
-            )
-        ]
-    )
-
-    contacto = StringField(
-        "Persona de contacto",
-        validators=[
-            DataRequired(message="El contacto es obligatorio."),
+            DataRequired(
+                message="El nombre del proveedor es obligatorio."
+            ),
             Length(
                 min=3,
                 max=100,
-                message="El contacto debe tener entre 3 y 100 caracteres."
+                message="El nombre debe tener entre 3 y 100 caracteres."
             )
         ]
     )
@@ -32,23 +22,29 @@ class ProveedorForm(FlaskForm):
     telefono = StringField(
         "Teléfono",
         validators=[
-            DataRequired(message="El teléfono es obligatorio."),
+            DataRequired(
+                message="El teléfono es obligatorio."
+            ),
             Length(
                 min=7,
-                max=15,
-                message="El teléfono debe tener entre 7 y 15 caracteres."
+                max=20,
+                message="El teléfono debe tener entre 7 y 20 caracteres."
             )
         ]
     )
 
-    producto = StringField(
-        "Producto",
+    correo = EmailField(
+        "Correo electrónico",
         validators=[
-            DataRequired(message="El producto es obligatorio."),
+            DataRequired(
+                message="El correo es obligatorio."
+            ),
+            Email(
+                message="Ingrese un correo electrónico válido."
+            ),
             Length(
-                min=2,
                 max=100,
-                message="El producto debe tener entre 2 y 100 caracteres."
+                message="El correo no puede superar los 100 caracteres."
             )
         ]
     )

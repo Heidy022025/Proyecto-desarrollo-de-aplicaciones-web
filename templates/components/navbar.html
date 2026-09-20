@@ -16,35 +16,81 @@
 
             <ul class="navbar-nav ms-auto">
 
+                <!-- Inicio -->
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('inicio') }}">
                         Inicio
                     </a>
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('productos') }}">
-                        Productos
-                    </a>
-                </li>
+                {% if current_user.is_authenticated %}
 
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('clientes') }}">
-                        Clientes
-                    </a>
-                </li>
+                    <!-- Productos -->
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           href="{{ url_for('productos') }}">
+                            Productos
+                        </a>
+                    </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('proveedores') }}">
-                        Proveedores
-                    </a>
-                </li>
+                    <!-- Clientes -->
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           href="{{ url_for('clientes') }}">
+                            Clientes
+                        </a>
+                    </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('facturacion') }}">
-                        Facturación
-                    </a>
-                </li>
+                    <!-- Proveedores -->
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           href="{{ url_for('proveedores') }}">
+                            Proveedores
+                        </a>
+                    </li>
+
+                    <!-- Facturación -->
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           href="{{ url_for('facturacion') }}">
+                            Facturación
+                        </a>
+                    </li>
+
+                    <!-- Usuario autenticado -->
+                    <li class="nav-item">
+                        <span class="nav-link text-warning">
+                            Usuario: {{ current_user.usuario }}
+                        </span>
+                    </li>
+
+                    <!-- Cerrar sesión -->
+                    <li class="nav-item">
+                        <a class="nav-link text-danger"
+                           href="{{ url_for('logout') }}">
+                            Cerrar sesión
+                        </a>
+                    </li>
+
+                {% else %}
+
+                    <!-- Iniciar sesión -->
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           href="{{ url_for('login') }}">
+                            Iniciar sesión
+                        </a>
+                    </li>
+
+                    <!-- Registro -->
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           href="{{ url_for('registro') }}">
+                            Registrarse
+                        </a>
+                    </li>
+
+                {% endif %}
 
             </ul>
 

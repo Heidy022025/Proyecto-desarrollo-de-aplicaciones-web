@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %}Panel principal - SmartVentas Solutions{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="text-center mb-5">
+
+        <h1 class="display-5">
+            Panel principal
+        </h1>
+
+        <p class="lead">
+            Bienvenido/a, <strong>{{ current_user.usuario }}</strong>
+        </p>
+
+        <p class="text-muted">
+            Ha iniciado sesión correctamente en SmartVentas Solutions.
+        </p>
+
+    </div>
+
+    <div class="row g-4">
+
+        <div class="col-md-3">
+            <div class="card shadow h-100">
+                <div class="card-body text-center">
+                    <h5>Productos</h5>
+
+                    <a href="{{ url_for('productos') }}"
+                       class="btn btn-primary">
+                        Administrar
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow h-100">
+                <div class="card-body text-center">
+                    <h5>Clientes</h5>
+
+                    <a href="{{ url_for('clientes') }}"
+                       class="btn btn-primary">
+                        Administrar
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow h-100">
+                <div class="card-body text-center">
+                    <h5>Proveedores</h5>
+
+                    <a href="{{ url_for('proveedores') }}"
+                       class="btn btn-primary">
+                        Administrar
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow h-100">
+                <div class="card-body text-center">
+                    <h5>Facturación</h5>
+
+                    <a href="{{ url_for('facturacion') }}"
+                       class="btn btn-primary">
+                        Administrar
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="text-center mt-5">
+
+        <a href="{{ url_for('logout') }}"
+           class="btn btn-danger">
+            Cerrar sesión
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

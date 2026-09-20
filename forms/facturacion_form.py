@@ -1,28 +1,36 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, IntegerField, DecimalField, SubmitField
+from wtforms import SelectField, IntegerField, DecimalField, SubmitField
 from wtforms.validators import DataRequired, NumberRange
 
 
 class FacturacionForm(FlaskForm):
 
-    cliente = StringField(
+    cliente = SelectField(
         "Cliente",
+        coerce=int,
         validators=[
-            DataRequired(message="El cliente es obligatorio.")
+            DataRequired(
+                message="Debe seleccionar un cliente."
+            )
         ]
     )
 
-    producto = StringField(
+    producto = SelectField(
         "Producto",
+        coerce=int,
         validators=[
-            DataRequired(message="El producto es obligatorio.")
+            DataRequired(
+                message="Debe seleccionar un producto."
+            )
         ]
     )
 
     cantidad = IntegerField(
         "Cantidad",
         validators=[
-            DataRequired(message="La cantidad es obligatoria."),
+            DataRequired(
+                message="La cantidad es obligatoria."
+            ),
             NumberRange(
                 min=1,
                 message="La cantidad debe ser mayor que 0."
@@ -33,12 +41,15 @@ class FacturacionForm(FlaskForm):
     precio = DecimalField(
         "Precio",
         validators=[
-            DataRequired(message="El precio es obligatorio."),
+            DataRequired(
+                message="El precio es obligatorio."
+            ),
             NumberRange(
                 min=0,
                 message="El precio no puede ser negativo."
             )
-        ]
+        ],
+        places=2
     )
 
     submit = SubmitField("Generar factura")

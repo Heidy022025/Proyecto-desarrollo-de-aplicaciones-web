@@ -1,108 +1,61 @@
-```html
 {% extends "base.html" %}
 
-{% block title %}Facturación - SmartVentas Solutions{% endblock %}
+{% block title %}Facturación{% endblock %}
 
 {% block content %}
 
 <div class="container mt-4">
 
-    <div class="mb-4">
+```
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Facturación</h2>
 
-        <div class="d-flex justify-content-between align-items-center">
+    <a href="{{ url_for('formulario_facturacion') }}" class="btn btn-primary">
+        Nueva factura
+    </a>
+</div>
 
-            <div>
-                <h1>Facturación</h1>
+{% if facturas %}
 
-                <p class="text-muted">
-                    Registro de facturas generadas en el sistema.
-                </p>
-            </div>
+<div class="table-responsive">
+    <table class="table table-bordered table-striped">
 
-            <a href="{{ url_for('formulario_facturacion') }}"
-               class="btn btn-primary">
-                + Nueva factura
-            </a>
+        <thead class="table-dark">
+            <tr>
+                <th>ID Factura</th>
+                <th>Cliente</th>
+                <th>Fecha</th>
+                <th>Total</th>
+            </tr>
+        </thead>
 
-        </div>
+        <tbody>
 
+            {% for factura in facturas %}
+
+            <tr>
+                <td>{{ factura.id_factura }}</td>
+                <td>{{ factura.cliente }}</td>
+                <td>{{ factura.fecha }}</td>
+                <td>$ {{ "%.2f"|format(factura.total) }}</td>
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+</div>
+
+{% else %}
+
+    <div class="alert alert-info">
+        No hay facturas registradas.
     </div>
 
-    <div class="card shadow-sm">
-
-        <div class="card-body">
-
-            <div class="table-responsive">
-
-                <table class="table table-hover align-middle">
-
-                    <thead class="table-dark">
-
-                        <tr>
-                            <th>Número</th>
-                            <th>Cliente</th>
-                            <th>Fecha</th>
-                            <th>Total</th>
-                            <th>Estado</th>
-                        </tr>
-
-                    </thead>
-
-                    <tbody>
-
-                        {% for factura in facturas %}
-
-                        <tr>
-
-                            <td>
-                                {{ factura.numero }}
-                            </td>
-
-                            <td>
-                                {{ factura.cliente }}
-                            </td>
-
-                            <td>
-                                {{ factura.fecha }}
-                            </td>
-
-                            <td>
-                                ${{ "%.2f"|format(factura.total) }}
-                            </td>
-
-                            <td>
-
-                                {% if factura.estado == "Pagada" %}
-
-                                    <span class="badge bg-success">
-                                        {{ factura.estado|upper }}
-                                    </span>
-
-                                {% else %}
-
-                                    <span class="badge bg-warning text-dark">
-                                        {{ factura.estado|upper }}
-                                    </span>
-
-                                {% endif %}
-
-                            </td>
-
-                        </tr>
-
-                        {% endfor %}
-
-                    </tbody>
-
-                </table>
-
-            </div>
-
-        </div>
-
-    </div>
+{% endif %}
+```
 
 </div>
 
 {% endblock %}
-```

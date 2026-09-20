@@ -45,7 +45,9 @@ class ClienteForm(FlaskForm):
         "Correo electrónico",
         validators=[
             DataRequired(message="El correo es obligatorio."),
-            Email(message="Ingrese un correo electrónico válido.")
+            Email(
+                message="Ingrese un correo electrónico válido."
+            )
         ]
     )
 
