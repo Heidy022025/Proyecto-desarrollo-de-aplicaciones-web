@@ -1,3 +1,4 @@
+```html
 {% extends "base.html" %}
 
 {% block title %}
@@ -8,77 +9,150 @@ Clientes - SmartVentas
 
 <div class="container">
 
+    <!-- Encabezado -->
     <div class="d-flex justify-content-between align-items-center mb-4">
 
         <div>
+
             <h1>Clientes</h1>
 
             <p class="text-muted">
-                Registro de clientes del sistema.
+                Registro de clientes de SmartVentas Solutions.
             </p>
+
         </div>
 
-        <a href="{{ url_for('formulario_cliente') }}"
-           class="btn btn-primary">
-            + Nuevo cliente
-        </a>
+        <div class="d-flex align-items-center gap-2">
+
+            <span class="badge bg-primary fs-6">
+                Total: {{ clientes|length }}
+            </span>
+
+            <a href="{{ url_for('formulario_cliente') }}"
+               class="btn btn-primary">
+
+                + Nuevo cliente
+
+            </a>
+
+        </div>
 
     </div>
 
 
-    <div class="row">
+    <!-- Tabla de clientes -->
+    <div class="card shadow-sm">
 
-        {% for cliente in clientes %}
+        <div class="card-body">
 
-        <div class="col-md-4 mb-4">
+            <div class="table-responsive">
 
-            <div class="card h-100 shadow-sm">
+                <table class="table table-hover align-middle">
 
-                <div class="card-body">
+                    <thead class="table-dark">
 
-                    <h5 class="card-title">
-                        {{ cliente.nombre|upper }}
-                    </h5>
+                        <tr>
 
-                    <p class="card-text">
-                        <strong>Cédula:</strong>
-                        {{ cliente.cedula }}
-                    </p>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Cédula</th>
+                            <th>Teléfono</th>
+                            <th>Correo</th>
+                            <th>Acciones</th>
 
-                    <p class="card-text">
-                        <strong>Teléfono:</strong>
-                        {{ cliente.telefono }}
-                    </p>
+                        </tr>
 
-                    <p class="card-text">
-                        <strong>Correo:</strong>
-                        {{ cliente.correo }}
-                    </p>
+                    </thead>
 
-                    {% if cliente.correo %}
+                    <tbody>
 
-                        <span class="badge bg-success">
-                            Cliente registrado
-                        </span>
+                        {% for cliente in clientes %}
 
-                    {% else %}
+                        <tr>
 
-                        <span class="badge bg-warning text-dark">
-                            Sin correo registrado
-                        </span>
+                            <td>
+                                {{ cliente.id_cliente }}
+                            </td>
 
-                    {% endif %}
+                            <td>
+                                {{ cliente.nombre }}
+                            </td>
 
-                </div>
+                            <td>
+                                {{ cliente.cedula }}
+                            </td>
+
+                            <td>
+                                {{ cliente.telefono }}
+                            </td>
+
+                            <td>
+                                {{ cliente.correo }}
+                            </td>
+
+                            <td>
+
+                                <div class="d-flex gap-2">
+
+                                    <!-- Editar -->
+                                    <a href="{{ url_for('editar_cliente', id=cliente.id_cliente) }}"
+                                       class="btn btn-warning btn-sm">
+
+                                        ✏️ Editar
+
+                                    </a>
+
+
+                                    <!-- Eliminar -->
+                                    <form method="POST"
+                                          action="{{ url_for('eliminar_cliente', id=cliente.id_cliente) }}"
+                                          onsubmit="return confirm('¿Está seguro de eliminar este cliente?');">
+
+                                        <button type="submit"
+                                                class="btn btn-danger btn-sm">
+
+                                            🗑️ Eliminar
+
+                                        </button>
+
+                                    </form>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                        {% else %}
+
+                        <tr>
+
+                            <td colspan="6"
+                                class="text-center">
+
+                                <div class="alert alert-info mb-0">
+
+                                    No existen clientes registrados todavía.
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
 
             </div>
 
         </div>
-
-        {% endfor %}
 
     </div>
 
 </div>
 
 {% endblock %}
+```

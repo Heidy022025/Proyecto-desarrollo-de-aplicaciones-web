@@ -1,59 +1,153 @@
+```html
 {% extends "base.html" %}
 
-{% block title %}Proveedores{% endblock %}
+{% block title %}
+Proveedores - SmartVentas
+{% endblock %}
 
 {% block content %}
 
-<div class="container mt-4">
+<div class="container">
 
+    <!-- Encabezado -->
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>Proveedores</h2>
 
-        <a href="{{ url_for('formulario_proveedor') }}" class="btn btn-primary">
-            Nuevo proveedor
-        </a>
-    </div>
+        <div>
 
-    {% if proveedores %}
+            <h1>Proveedores</h1>
 
-    <div class="table-responsive">
-        <table class="table table-bordered table-striped">
+            <p class="text-muted">
+                Registro de proveedores de SmartVentas Solutions.
+            </p>
 
-            <thead class="table-dark">
-                <tr>
-                    <th>ID</th>
-                    <th>Nombre</th>
-                    <th>Teléfono</th>
-                    <th>Correo</th>
-                </tr>
-            </thead>
-
-            <tbody>
-
-                {% for proveedor in proveedores %}
-
-                <tr>
-                    <td>{{ proveedor.id_proveedor }}</td>
-                    <td>{{ proveedor.nombre }}</td>
-                    <td>{{ proveedor.telefono }}</td>
-                    <td>{{ proveedor.correo }}</td>
-                </tr>
-
-                {% endfor %}
-
-            </tbody>
-
-        </table>
-    </div>
-
-    {% else %}
-
-        <div class="alert alert-info">
-            No hay proveedores registrados.
         </div>
 
-    {% endif %}
+        <div class="d-flex align-items-center gap-2">
+
+            <span class="badge bg-primary fs-6">
+                Total: {{ proveedores|length }}
+            </span>
+
+            <a href="{{ url_for('formulario_proveedor') }}"
+               class="btn btn-primary">
+
+                + Nuevo proveedor
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- Tabla de proveedores -->
+    <div class="card shadow-sm">
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle">
+
+                    <thead class="table-dark">
+
+                        <tr>
+
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Teléfono</th>
+                            <th>Correo</th>
+                            <th>Acciones</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for proveedor in proveedores %}
+
+                        <tr>
+
+                            <td>
+                                {{ proveedor.id_proveedor }}
+                            </td>
+
+                            <td>
+                                {{ proveedor.nombre }}
+                            </td>
+
+                            <td>
+                                {{ proveedor.telefono }}
+                            </td>
+
+                            <td>
+                                {{ proveedor.correo }}
+                            </td>
+
+                            <td>
+
+                                <div class="d-flex gap-2">
+
+                                    <!-- Editar -->
+                                    <a href="{{ url_for('editar_proveedor', id=proveedor.id_proveedor) }}"
+                                       class="btn btn-warning btn-sm">
+
+                                        ✏️ Editar
+
+                                    </a>
+
+
+                                    <!-- Eliminar -->
+                                    <form method="POST"
+                                          action="{{ url_for('eliminar_proveedor', id=proveedor.id_proveedor) }}"
+                                          onsubmit="return confirm('¿Está seguro de eliminar este proveedor?');">
+
+                                        <button type="submit"
+                                                class="btn btn-danger btn-sm">
+
+                                            🗑️ Eliminar
+
+                                        </button>
+
+                                    </form>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                        {% else %}
+
+                        <tr>
+
+                            <td colspan="5"
+                                class="text-center">
+
+                                <div class="alert alert-info mb-0">
+
+                                    No existen proveedores registrados todavía.
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
 
 </div>
 
 {% endblock %}
+```

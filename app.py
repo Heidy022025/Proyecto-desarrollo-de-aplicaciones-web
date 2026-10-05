@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, flash
+from flask import Flask, render_template, redirect, url_for, flash, request
 from flask_login import (
     LoginManager,
     login_user,
@@ -17,9 +17,14 @@ from forms.usuario_form import UsuarioForm
 
 from models import Usuario
 
-import mysql.connector
+import psycopg2
+from psycopg2.extras import RealDictCursor
 from decimal import Decimal
 
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
 
@@ -27,7 +32,7 @@ app = Flask(__name__)
 # CONFIGURACIÓN DE FLASK-WTF Y FLASK-LOGIN
 # =========================================================
 
-app.config["SECRET_KEY"] = "smartventas-clave-secreta-2026"
+app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -42,15 +47,15 @@ login_manager.login_message_category = "warning"
 # =========================================================
 
 DB_CONFIG = {
-    "host": "localhost",
-    "port": 3306,
-    "user": "root",
-    "password": "heidy_2006",
-    "database": "smartventas"
+    "host": os.getenv("POSTGRES_HOST", "localhost"),
+    "port": int(os.getenv("POSTGRES_PORT", 5432)),
+    "user": os.getenv("POSTGRES_USER", "postgres"),
+    "password": os.getenv("POSTGRES_PASSWORD"),
+    "dbname": os.getenv("POSTGRES_DATABASE", "smartventas")
 }
 
 def conectar_bd():
-    return mysql.connector.connect(**DB_CONFIG)
+    return psycopg2.connect(**DB_CONFIG)
 
 
 # =========================================================
@@ -61,7 +66,7 @@ def conectar_bd():
 def load_user(user_id):
 
     conn = conectar_bd()
-    cursor = conn.cursor(dictionary=True)
+    cursor = conn.cursor(cursor_factory=RealDictCursor)
 
     cursor.execute("""
         SELECT id, usuario, password
@@ -95,7 +100,7 @@ def registro():
     if form.validate_on_submit():
 
         conn = conectar_bd()
-        cursor = conn.cursor(dictionary=True)
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
 
         # Comprobar si el usuario ya existe
         cursor.execute("""
@@ -158,7 +163,7 @@ def login():
     if form.validate_on_submit():
 
         conn = conectar_bd()
-        cursor = conn.cursor(dictionary=True)
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
 
         cursor.execute("""
             SELECT id, usuario, password
@@ -241,7 +246,7 @@ def dashboard():
 def inicio():
 
     conn = conectar_bd()
-    cursor = conn.cursor(dictionary=True)
+    cursor = conn.cursor(cursor_factory=RealDictCursor)
 
     # Obtener cantidad de productos
     cursor.execute("SELECT COUNT(*) AS total FROM productos")
@@ -287,7 +292,7 @@ def inicio():
 def productos():
 
     conn = conectar_bd()
-    cursor = conn.cursor(dictionary=True)
+    cursor = conn.cursor(cursor_factory=RealDictCursor)
 
     cursor.execute("""
         SELECT
@@ -314,21 +319,63 @@ def productos():
     )
 
 
-@app.route("/productos/nuevo", methods=["GET", "POST"])
+
+# =========================================================
+# EDITAR PRODUCTO
+# =========================================================
+
+@app.route("/productos/editar/<int:id>", methods=["GET", "POST"])
 @login_required
-def formulario_producto():
+def editar_producto(id):
 
-    form = ProductoForm()
-
-    # =====================================================
-    # CARGAR PROVEEDORES EN EL SELECT
-    # =====================================================
+    # -----------------------------------------------------
+    # Conectar a PostgreSQL
+    # -----------------------------------------------------
 
     conn = conectar_bd()
-    cursor = conn.cursor(dictionary=True)
+    cursor = conn.cursor(cursor_factory=RealDictCursor)
+
+    # -----------------------------------------------------
+    # Buscar producto
+    # -----------------------------------------------------
 
     cursor.execute("""
-        SELECT id_proveedor, nombre
+        SELECT
+            id_producto,
+            nombre,
+            precio,
+            stock,
+            id_proveedor
+        FROM productos
+        WHERE id_producto = %s
+    """, (id,))
+
+    producto = cursor.fetchone()
+
+    # -----------------------------------------------------
+    # Verificar si existe
+    # -----------------------------------------------------
+
+    if producto is None:
+
+        cursor.close()
+        conn.close()
+
+        flash(
+            "El producto no existe.",
+            "danger"
+        )
+
+        return redirect(url_for("productos"))
+
+    # -----------------------------------------------------
+    # Obtener proveedores
+    # -----------------------------------------------------
+
+    cursor.execute("""
+        SELECT
+            id_proveedor,
+            nombre
         FROM proveedores
         ORDER BY nombre
     """)
@@ -338,8 +385,156 @@ def formulario_producto():
     cursor.close()
     conn.close()
 
+    # -----------------------------------------------------
+    # Crear formulario
+    # -----------------------------------------------------
+
+    form = ProductoForm()
+
+    # Cargar proveedores en el campo SELECT
     form.id_proveedor.choices = [
-        (proveedor["id_proveedor"], proveedor["nombre"])
+        (
+            proveedor["id_proveedor"],
+            proveedor["nombre"]
+        )
+        for proveedor in proveedores
+    ]
+
+    # -----------------------------------------------------
+    # GET: cargar datos actuales del producto
+    # -----------------------------------------------------
+
+    if request.method == "GET":
+
+        form.nombre.data = producto["nombre"]
+        form.precio.data = producto["precio"]
+        form.stock.data = producto["stock"]
+        form.id_proveedor.data = producto["id_proveedor"]
+
+    # -----------------------------------------------------
+    # POST: guardar cambios
+    # -----------------------------------------------------
+
+    if form.validate_on_submit():
+
+        conn = conectar_bd()
+        cursor = conn.cursor()
+
+        cursor.execute("""
+            UPDATE productos
+            SET
+                nombre = %s,
+                precio = %s,
+                stock = %s,
+                id_proveedor = %s
+            WHERE id_producto = %s
+        """, (
+            form.nombre.data,
+            form.precio.data,
+            form.stock.data,
+            form.id_proveedor.data,
+            id
+        ))
+
+        conn.commit()
+
+        cursor.close()
+        conn.close()
+
+        flash(
+            "Producto actualizado correctamente.",
+            "success"
+        )
+
+        return redirect(url_for("productos"))
+
+    # -----------------------------------------------------
+    # Mostrar formulario
+    # -----------------------------------------------------
+
+    return render_template(
+        "formulario_producto.html",
+        form=form,
+        titulo="Editar producto"
+    )
+
+# =========================================================
+# ELIMINAR PRODUCTO
+# =========================================================
+
+@app.route("/productos/eliminar/<int:id>", methods=["POST"])
+@login_required
+def eliminar_producto(id):
+
+    conn = conectar_bd()
+    cursor = conn.cursor()
+
+    try:
+
+        cursor.execute("""
+            DELETE FROM productos
+            WHERE id_producto = %s
+        """, (id,))
+
+        conn.commit()
+
+        flash(
+            "Producto eliminado correctamente.",
+            "success"
+        )
+
+    except Exception:
+
+        conn.rollback()
+
+        flash(
+            "No se pudo eliminar el producto.",
+            "danger"
+        )
+
+    finally:
+
+        cursor.close()
+        conn.close()
+
+    return redirect(url_for("productos"))
+
+# =========================================================
+# NUEVO PRODUCTO
+# =========================================================
+
+@app.route("/productos/nuevo", methods=["GET", "POST"])
+@login_required
+def formulario_producto():
+
+    form = ProductoForm()
+
+    # =====================================================
+    # OBTENER PROVEEDORES
+    # =====================================================
+
+    conn = conectar_bd()
+    cursor = conn.cursor(cursor_factory=RealDictCursor)
+
+    cursor.execute("""
+        SELECT
+            id_proveedor,
+            nombre
+        FROM proveedores
+        ORDER BY nombre
+    """)
+
+    proveedores = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+
+    # Cargar proveedores en el SELECT
+    form.id_proveedor.choices = [
+        (
+            proveedor["id_proveedor"],
+            proveedor["nombre"]
+        )
         for proveedor in proveedores
     ]
 
@@ -354,7 +549,12 @@ def formulario_producto():
 
         cursor.execute("""
             INSERT INTO productos
-            (nombre, precio, stock, id_proveedor)
+            (
+                nombre,
+                precio,
+                stock,
+                id_proveedor
+            )
             VALUES (%s, %s, %s, %s)
         """, (
             form.nombre.data,
@@ -368,23 +568,34 @@ def formulario_producto():
         cursor.close()
         conn.close()
 
+        flash(
+            "Producto registrado correctamente.",
+            "success"
+        )
+
         return redirect(url_for("productos"))
+
+    # =====================================================
+    # MOSTRAR FORMULARIO
+    # =====================================================
 
     return render_template(
         "formulario_producto.html",
-        form=form
+        form=form,
+        titulo="Registrar producto"
     )
 
 
 # =========================================================
 # CLIENTES
 # =========================================================
+
 @app.route("/clientes")
 @login_required
 def clientes():
 
     conn = conectar_bd()
-    cursor = conn.cursor(dictionary=True)
+    cursor = conn.cursor(cursor_factory=RealDictCursor)
 
     cursor.execute("""
         SELECT
@@ -408,6 +619,10 @@ def clientes():
     )
 
 
+# =========================================================
+# NUEVO CLIENTE
+# =========================================================
+
 @app.route("/clientes/nuevo", methods=["GET", "POST"])
 @login_required
 def formulario_cliente():
@@ -421,7 +636,12 @@ def formulario_cliente():
 
         cursor.execute("""
             INSERT INTO clientes
-            (nombre, cedula, telefono, correo)
+            (
+                nombre,
+                cedula,
+                telefono,
+                correo
+            )
             VALUES (%s, %s, %s, %s)
         """, (
             form.nombre.data,
@@ -435,12 +655,152 @@ def formulario_cliente():
         cursor.close()
         conn.close()
 
+        flash(
+            "Cliente registrado correctamente.",
+            "success"
+        )
+
         return redirect(url_for("clientes"))
 
     return render_template(
         "formulario_cliente.html",
-        form=form
+        form=form,
+        titulo="Registrar cliente"
     )
+
+
+# =========================================================
+# EDITAR CLIENTE
+# =========================================================
+
+@app.route("/clientes/editar/<int:id>", methods=["GET", "POST"])
+@login_required
+def editar_cliente(id):
+
+    conn = conectar_bd()
+    cursor = conn.cursor(cursor_factory=RealDictCursor)
+
+    # Buscar cliente
+    cursor.execute("""
+        SELECT
+            id_cliente,
+            nombre,
+            cedula,
+            telefono,
+            correo
+        FROM clientes
+        WHERE id_cliente = %s
+    """, (id,))
+
+    cliente = cursor.fetchone()
+
+    cursor.close()
+    conn.close()
+
+    # Verificar si existe
+    if cliente is None:
+
+        flash(
+            "El cliente no existe.",
+            "danger"
+        )
+
+        return redirect(url_for("clientes"))
+
+    # Crear formulario
+    form = ClienteForm()
+
+    # Cargar datos cuando se abre el formulario
+    if request.method == "GET":
+
+        form.nombre.data = cliente["nombre"]
+        form.cedula.data = cliente["cedula"]
+        form.telefono.data = cliente["telefono"]
+        form.correo.data = cliente["correo"]
+
+    # Actualizar
+    if form.validate_on_submit():
+
+        conn = conectar_bd()
+        cursor = conn.cursor()
+
+        cursor.execute("""
+            UPDATE clientes
+            SET
+                nombre = %s,
+                cedula = %s,
+                telefono = %s,
+                correo = %s
+            WHERE id_cliente = %s
+        """, (
+            form.nombre.data,
+            form.cedula.data,
+            form.telefono.data,
+            form.correo.data,
+            id
+        ))
+
+        conn.commit()
+
+        cursor.close()
+        conn.close()
+
+        flash(
+            "Cliente actualizado correctamente.",
+            "success"
+        )
+
+        return redirect(url_for("clientes"))
+
+    return render_template(
+        "formulario_cliente.html",
+        form=form,
+        titulo="Editar cliente"
+    )
+
+
+# =========================================================
+# ELIMINAR CLIENTE
+# =========================================================
+
+@app.route("/clientes/eliminar/<int:id>", methods=["POST"])
+@login_required
+def eliminar_cliente(id):
+
+    conn = conectar_bd()
+    cursor = conn.cursor()
+
+    try:
+
+        cursor.execute("""
+            DELETE FROM clientes
+            WHERE id_cliente = %s
+        """, (id,))
+
+        conn.commit()
+
+        flash(
+            "Cliente eliminado correctamente.",
+            "success"
+        )
+
+    except Exception:
+
+        conn.rollback()
+
+        flash(
+            "No se pudo eliminar el cliente. "
+            "Puede estar relacionado con una factura.",
+            "danger"
+        )
+
+    finally:
+
+        cursor.close()
+        conn.close()
+
+    return redirect(url_for("clientes"))
+
 
 
 # =========================================================
@@ -452,7 +812,7 @@ def formulario_cliente():
 def proveedores():
 
     conn = conectar_bd()
-    cursor = conn.cursor(dictionary=True)
+    cursor = conn.cursor(cursor_factory=RealDictCursor)
 
     cursor.execute("""
         SELECT
@@ -475,6 +835,10 @@ def proveedores():
     )
 
 
+# =========================================================
+# NUEVO PROVEEDOR
+# =========================================================
+
 @app.route("/proveedores/nuevo", methods=["GET", "POST"])
 @login_required
 def formulario_proveedor():
@@ -488,7 +852,11 @@ def formulario_proveedor():
 
         cursor.execute("""
             INSERT INTO proveedores
-            (nombre, telefono, correo)
+            (
+                nombre,
+                telefono,
+                correo
+            )
             VALUES (%s, %s, %s)
         """, (
             form.nombre.data,
@@ -501,12 +869,149 @@ def formulario_proveedor():
         cursor.close()
         conn.close()
 
+        flash(
+            "Proveedor registrado correctamente.",
+            "success"
+        )
+
         return redirect(url_for("proveedores"))
 
     return render_template(
         "formulario_proveedor.html",
-        form=form
+        form=form,
+        titulo="Registrar proveedor"
     )
+
+
+# =========================================================
+# EDITAR PROVEEDOR
+# =========================================================
+
+@app.route("/proveedores/editar/<int:id>", methods=["GET", "POST"])
+@login_required
+def editar_proveedor(id):
+
+    conn = conectar_bd()
+    cursor = conn.cursor(cursor_factory=RealDictCursor)
+
+    # Buscar proveedor
+    cursor.execute("""
+        SELECT
+            id_proveedor,
+            nombre,
+            telefono,
+            correo
+        FROM proveedores
+        WHERE id_proveedor = %s
+    """, (id,))
+
+    proveedor = cursor.fetchone()
+
+    cursor.close()
+    conn.close()
+
+    # Verificar si existe
+    if proveedor is None:
+
+        flash(
+            "El proveedor no existe.",
+            "danger"
+        )
+
+        return redirect(url_for("proveedores"))
+
+    # Crear formulario
+    form = ProveedorForm()
+
+    # Cargar datos actuales
+    if request.method == "GET":
+
+        form.nombre.data = proveedor["nombre"]
+        form.telefono.data = proveedor["telefono"]
+        form.correo.data = proveedor["correo"]
+
+    # Guardar cambios
+    if form.validate_on_submit():
+
+        conn = conectar_bd()
+        cursor = conn.cursor()
+
+        cursor.execute("""
+            UPDATE proveedores
+            SET
+                nombre = %s,
+                telefono = %s,
+                correo = %s
+            WHERE id_proveedor = %s
+        """, (
+            form.nombre.data,
+            form.telefono.data,
+            form.correo.data,
+            id
+        ))
+
+        conn.commit()
+
+        cursor.close()
+        conn.close()
+
+        flash(
+            "Proveedor actualizado correctamente.",
+            "success"
+        )
+
+        return redirect(url_for("proveedores"))
+
+    return render_template(
+        "formulario_proveedor.html",
+        form=form,
+        titulo="Editar proveedor"
+    )
+
+
+# =========================================================
+# ELIMINAR PROVEEDOR
+# =========================================================
+
+@app.route("/proveedores/eliminar/<int:id>", methods=["POST"])
+@login_required
+def eliminar_proveedor(id):
+
+    conn = conectar_bd()
+    cursor = conn.cursor()
+
+    try:
+
+        cursor.execute("""
+            DELETE FROM proveedores
+            WHERE id_proveedor = %s
+        """, (id,))
+
+        conn.commit()
+
+        flash(
+            "Proveedor eliminado correctamente.",
+            "success"
+        )
+
+    except Exception:
+
+        conn.rollback()
+
+        flash(
+            "No se puede eliminar el proveedor porque "
+            "puede estar relacionado con productos.",
+            "danger"
+        )
+
+    finally:
+
+        cursor.close()
+        conn.close()
+
+    return redirect(url_for("proveedores"))
+
+
 
 
 # =========================================================
@@ -518,7 +1023,7 @@ def formulario_proveedor():
 def facturacion():
 
     conn = conectar_bd()
-    cursor = conn.cursor(dictionary=True)
+    cursor = conn.cursor(cursor_factory=RealDictCursor)
 
     cursor.execute("""
         SELECT
@@ -555,7 +1060,7 @@ def formulario_facturacion():
     # =====================================================
 
     conn = conectar_bd()
-    cursor = conn.cursor(dictionary=True)
+    cursor = conn.cursor(cursor_factory=RealDictCursor)
 
     cursor.execute("""
         SELECT id_cliente, nombre
@@ -609,7 +1114,7 @@ def formulario_facturacion():
         cursor.execute("""
             INSERT INTO facturas
             (id_cliente, fecha, total)
-            VALUES (%s, CURDATE(), %s)
+            VALUES (%s, CURRENT_DATE, %s)
         """, (
             form.cliente.data,
             total
