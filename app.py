@@ -55,6 +55,12 @@ DB_CONFIG = {
 }
 
 def conectar_bd():
+
+    database_url = os.getenv("DATABASE_URL")
+
+    if database_url:
+        return psycopg2.connect(database_url)
+
     return psycopg2.connect(**DB_CONFIG)
 
 
